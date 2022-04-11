@@ -13,9 +13,11 @@ import Cookies from './partials/cookies_modal';
 
 import { apicall, getCookie, setCookie } from './utils';
 import Product from './product';
+import Wishlist from './wishlist';
 import Cart from './cart';
 import Checkout from './checkout';
 import User from './not_found';
+import Dashboard from './dashboard';
 
 class Home extends Component {
 	constructor(props) {
@@ -58,6 +60,8 @@ class Home extends Component {
 							<Routes>	
 								<Route exact path="/" element={<HomePage list={this.state.list} lang_change={this.lang_change} lang={this.state.lang}></HomePage>}/>
 								<Route exact path="/items/:item" element={<Product list={this.state.list} lang_change={this.lang_change} lang={this.state.lang}></Product>}/>
+								<Route exact path="/dashboard" element={<Dashboard lang_change={this.lang_change} lang={this.state.lang}></Dashboard>}/>
+								<Route exact path="/wishlist" element={<Wishlist lang_change={this.lang_change} lang={this.state.lang}></Wishlist>}/>
 								<Route exact path="/cart" element={<Cart lang_change={this.lang_change} lang={this.state.lang}></Cart>}/>
 								<Route exact path="/checkout" element={<Checkout lang_change={this.lang_change} lang={this.state.lang}></Checkout>}/>
 								<Route exact path="/user" element={<User lang_change={this.lang_change} lang={this.state.lang}></User>}/>

@@ -50,22 +50,36 @@ class Carousel extends React.Component {
             cart_list = JSON.parse(getCookie('app_cart_list'));
         }
 
-        let price = this.state.list[id].Price;
-        if(this.state.list[id].Discount>0){
-            price = price - price * this.state.list[id].Discount/100;
-        }
-        let qty = 1;
-        let color = null;
-        if(this.state.list[id].Color && this.state.list[id].Color.length>0){
-            color = this.state.list[id].Color[0];
-        }
-        let size = null;
-        if(this.state.list[id].Size && this.state.list[id].Size.length>0){
-            size = this.state.list[id].Size[0];
+        let exist_cart = false;
+        for(let i in cart_list){
+            if(cart_list[i].id === id){
+                //already exists in cart -> then update cart
+                exist_cart = true;
+                cart_list[i].qty++;
+                break;
+            }
         }
 
-        let item = {id: id, img:this.state.list[id].Img, name:this.state.list[id].Name, price:price, qty:qty, color:color, size:size}
-        cart_list.push(item);
+        if(!exist_cart){
+            //product is new
+            let price = this.state.list[id].Price;
+            if(this.state.list[id].Discount>0){
+                price = price - price * this.state.list[id].Discount/100;
+            }
+            let qty = 1;
+            let color = null;
+            if(this.state.list[id].Color && this.state.list[id].Color.length>0){
+                color = this.state.list[id].Color[0];
+            }
+            let size = null;
+            if(this.state.list[id].Size && this.state.list[id].Size.length>0){
+                size = this.state.list[id].Size[0];
+            }
+
+            let item = {id: id, img:this.state.list[id].Img, name:this.state.list[id].Name, price:price, qty:qty, color:color, size:size}
+            cart_list.push(item);
+        }
+        
         const myJSON = JSON.stringify(cart_list);
         setCookie("app_cart_list", myJSON, 1);
     }
@@ -93,7 +107,6 @@ class Carousel extends React.Component {
             <>
                 {self.state.list ? <div className="Owl_container">
                     {(() => {
-                        //his.state.template === "related_products"
                         switch (this.state.template) {
                             case "related_products":
                                 return (

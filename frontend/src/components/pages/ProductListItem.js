@@ -34,9 +34,9 @@ class ProductListItem extends React.Component {
 	render(){
 		let self = this;		
 		let lang = this.props.lang;
-		let button_text = "Add to cart";
+		let button_text = "See product";
 		if(lang === "ro"){
-			button_text = "Adauga in cos";
+			button_text = "Vezi produs";
 		}
         let item = this.props.item;
 		return (

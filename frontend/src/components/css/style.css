@@ -98,6 +98,13 @@ a:focus {
 .text-muted {
     color:var(--grey666);
 }
+.box{
+    border:solid 1px var(--bg-color);
+    background-color: var(--bg);
+    color:var(--text);
+    padding:10px;
+    border-radius: var(--border_radius_small);
+}
 
 /*---------------------BUTTONS, DROP-DOWNS, INPUTS AND TEXTAREAS---------------------*/
 .button_color{
@@ -749,4 +756,96 @@ a:focus {
         display: inline-block;
         vertical-align: middle;
     }
+}
+
+/*---------------------CART PAGE---------------------*/
+.cart_container, .coupon_container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding:5px;
+}
+.cart_box{
+    padding:5px;
+}
+.cart_box .cart{
+    display: inline-block;
+    vertical-align: top;
+    padding: 5px;
+    width:20%;
+}
+.cart_box .cart h4{
+    font-size: 20px;
+    line-height: 20px;
+}
+.cart_img img{
+    width:150px;
+}
+.cart_quantity input{
+    width:auto;
+}
+.cart_buttons{
+    text-align: right;
+}
+.cart_buttons button{
+    width:35px;
+    height: 35px;
+    margin-left: 5px;
+}
+
+.coupon_box{
+    padding: 5px;
+}
+.coupon_box input{
+    margin:0px;
+    border-radius: var(--border_radius_small) 0px 0px var(--border_radius_small);
+    border-right: solid 0px transparent!important;
+    width: 80%;
+    vertical-align: top;
+}
+.coupon_box button{
+    margin:0px;
+    border-radius: 0px var(--border_radius_small) var(--border_radius_small) 0px;
+    border-right: solid 0px transparent!important;
+    width:20%;
+    vertical-align: top;
+}
+
+.total_container{
+    padding: 5px;
+}
+.total_box table{
+    margin:0px
+}
+.total_box table, .total_box table tr, .total_box table tr td{
+    color:var(--bg-color)!important;
+    padding: 5px;
+    line-height: 16px;
+}
+.total_box table tr, .total_box table tr td{
+    border:solid 0px transparent;
+}
+.total_box table td:last-child{
+    text-align: right;
+}
+
+.payment{
+    padding:10px;
+}
+.payment a{
+    margin-top: 5px;
+    text-align: center;
+}
+
+/*---------------------CHECKOUT PAGE---------------------*/
+.shipping_other_address{
+    display:none;
+}
+.checkbox_payment_box{
+    padding: 5px;
+}
+.checkout_box .input_black, .checkout_box .input_color{
+    margin:5px 0px;
+}
+.checkout_box .button_black, .checkout_box .button_color{
+    margin:5px 0px;
 }

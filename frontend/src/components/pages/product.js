@@ -59,21 +59,22 @@ class Product extends React.Component {
 
             let exist_cart = false;
             for(let i in cart_list){
-                console.log(cart_list[i].id === id, cart_list[i].color === color, cart_list[i].size === size);
                 if(cart_list[i].id === id && cart_list[i].color === color&& cart_list[i].size === size){
+                    //already exists in cart -> then update cart
                     exist_cart = true;
-                    cart_list[i].qty = cart_list[i].qty + qty;
+                    cart_list[i].qty = cart_list[i].qty + parseInt(qty);
                     break;
                 }
             }
 
             if(!exist_cart){
+                //product is new
                 let price = self.state.item.Price;
                 if(self.state.item.Discount>0){
                     price = price - price * self.state.item.Discount/100;
                 }
 
-                let item = {id: id, img:self.state.item.Img, name:self.state.item.Name, price:price, qty:qty, color:color, size:size}            
+                let item = {id: id, img:self.state.item.Img, name:self.state.item.Name, price:price, qty:parseInt(qty), color:color, size:size}            
                 cart_list.push(item);
             }
             
@@ -83,7 +84,43 @@ class Product extends React.Component {
     }
 
     add_wishlist(id){
-        console.log('add_wishlist ', id)
+        let wish_list = [];
+        if(getCookie('app_wish_list')){
+            wish_list = JSON.parse(getCookie('app_wish_list'));
+        }
+
+        let exist_wish = false;
+        for(let i in wish_list){
+            if(wish_list[i].id === id){
+                //already exists in wishlist
+                exist_wish = true;
+                break;
+            }
+        }
+
+        if(!exist_wish){
+            //product is new
+            let size = this.state.size;
+            let color = this.state.color;
+            if(size === "Marime" || size === "Size"){
+                if(this.state.item.Size.length>0){
+                    size = this.state.item.Size[0];
+                } else {
+                    size = null;
+                }
+            }
+            if(color === "Culoare" || color === "Color"){
+                if(this.state.item.Color.length>0){
+                    color = this.state.item.Color[0];
+                } else {
+                    color = null;
+                }
+            }
+            let item = {id: id, color:color, size:size}
+            wish_list.push(item)
+            const myJSON = JSON.stringify(wish_list);
+            setCookie("app_wish_list", myJSON, 1);
+        }
     }
 
     handleSelect_size(e){

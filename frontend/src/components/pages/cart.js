@@ -3,7 +3,10 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/esm/Button';
 import Row from 'react-bootstrap/esm/Row';
 import Navigation from './partials/navbar';
-import { getCookie } from './utils';
+import { apicall, getCookie } from './utils';
+import OrderSummary from './partials/orderSummary';
+import Total from './partials/total';
+import $ from 'jquery';
 
 class Cart extends React.Component {
 	constructor(props) {
@@ -12,6 +15,7 @@ class Cart extends React.Component {
 			lang: props.lang,
             cart_list: null,
 		};
+        this.get_discount = this.get_discount.bind(this);  
 	}
 
 	componentDidMount(){
@@ -21,77 +25,65 @@ class Cart extends React.Component {
         }
         this.setState({cart_list : cart_list});
 	}
+
+    get_discount(){
+        let text = $('#coupon_input').val();
+        apicall('/getDiscount', 'POST', {text}).then(function(data){
+            console.log('get_discount', data)
+        });
+    }
 	
-	render(){		
-		let lang = this.props.lang;
-        let cart_list = this.state.cart_list;
+	render(){	
+        let self = this;	
+		let lang = self.props.lang;
 		return (
             <>
-                <Navigation language={this.language} lang={lang}></Navigation>
-                <div className="mycontainer cart_container container">
+                <Navigation language={self.language} lang={lang}></Navigation>
+                <div className="mycontainer cart_page_container container">
                     <Row>
                         <Col sm={12} className="mycontainer_box">
                             <Row>
                                 <Col sm={12}>
-                                    <h2>Cart</h2>
+                                    <h2>{lang === "ro" ? 'Cos' : 'Cart'}</h2>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col sm={8}>
-                                    {(() => {
-                                        console.log('cart_list', cart_list);
-                                        if(typeof cart_list !== "undefined" && cart_list !== "null" && cart_list !== null && cart_list !== ""){
-                                            return(
-                                                <Row>
-                                                    {
-                                                        cart_list.map(function(x, i){
-                                                            console.log('cart_list', i, x);
-                                                            return (
-                                                                <Col sm={12 }key={i}>
-                                                                    <Row>
-                                                                        <Col sm={4}>
-                                                                            <img alt="" src=""></img>
-                                                                        </Col>
-                                                                        <Col sm={4}>
-                                                                            <h4>{x.name}</h4>
-                                                                            <h6>
-                                                                                <span>{lang === "ro" ? 'Marime' : 'Size'}: {x.size} </span> 
-                                                                                <span>{lang === "ro" ? 'Culoare' : 'Color'}: {x.color} </span>
-                                                                            </h6>
-                                                                        </Col>
-                                                                        <Col sm={4}>
-                                                                            <h4>{x.name}</h4>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Col>
-                                                            )
-                                                        })
-                                                    } 
-                                                </Row>
-                                            )
-                                        } else {
-                                            return (
-                                                <div>Loading...</div>
-                                            )
-                                        }
-                                    })()}
+                                <Row>
+                                    <Col sm={12}>
+                                        <OrderSummary lang={lang} cart_list={self.state.cart_list}></OrderSummary>
+                                    </Col>
+                                </Row>                                    
                                 </Col>
                                 <Col sm={4}>
-                                    <div className="got_to_checkout">
-                                        <div className="coupon_container">
-                                            {lang === "ro" ? <p>Ai un cupon?</p> : <p>Do you have a coupon?</p>}
-                                            <div className="coupon">
-                                                <input type="text"></input>
-                                                <Button type="button">
-                                                    {lang === "ro" ? <span>Adauga</span> : <span>Add</span>}
-                                                </Button>
+                                    <Row>
+                                        <Col sm={12}>
+                                            <div className="box coupon_container">
+                                                <div className="coupon_box">
+                                                    {lang === "ro" ? <p>Ai un cupon?</p> : <p>Do you have a coupon?</p>}
+                                                    <input id="coupon_input" type="text" className='input_black'></input>
+                                                    <Button onClick={()=>{self.get_discount()}} type="button" className="button_color">
+                                                        {lang === "ro" ? <span>Adauga</span> : <span>Add</span>}
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="payment_container">
-                                            <div className="payment">
+                                        </Col>
+                                        <Col sm={12}>
+                                            <Total lang={lang} cart_list={self.state.cart_list}></Total>
+                                        </Col>
+                                        <Col sm={12}>
+                                            <div className="payment_container">
+                                                <div className="payment">
+                                                    <a href="/" className="button_color">
+                                                        {lang === "ro" ? <span>Continua cumparaturile</span> : <span>Continue shopping</span>}
+                                                    </a>
+                                                    <a href="/checkout" className="button_color">
+                                                        {lang === "ro" ? <span>Finalizeaza plata</span> : <span>Checkout</span>}
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </Col>

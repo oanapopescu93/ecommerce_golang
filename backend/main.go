@@ -10,9 +10,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var a = [6]int{2, 3, 5, 7, 11, 13}
-
+// var a = [6]int{2, 3, 5, 7, 11, 13}
 // var b = []string{"oana"}
+
+type discount struct {
+	Name   string
+	Amount int
+}
 
 type product struct {
 	ID                int
@@ -32,6 +36,11 @@ type product struct {
 }
 
 var products = []product{}
+var discounts = []discount{
+	{Name: "discount001", Amount: 10},
+	{Name: "discount002", Amount: 11},
+	{Name: "discount003", Amount: 12},
+}
 
 func create_products() {
 	products = []product{}
@@ -138,11 +147,26 @@ func getItem(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func getDiscount(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	text_discount := vars
+	log.Println("text_discount ", text_discount)
+
+	var discount = false
+	send, err := json.Marshal(discount)
+	if err != nil {
+		panic(err)
+	}
+	w.Write(send)
+}
+
 func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/items/{item}", getItem)
 	r.HandleFunc("/getList", getList)
+
+	r.HandleFunc("/getDiscount", getDiscount)
 
 	// r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./static/"))))
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("../frontend/build/"))))

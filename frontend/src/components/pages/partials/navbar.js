@@ -49,8 +49,9 @@ class Navigation extends React.Component {
                                         <div className="navbar-logo"><a href="/"><h1>Logo</h1></a></div>
                                     </div>
                                     <div className="nav-right">
-                                        <div className="nav-icon"><a href="/cart"><i className="fa fa-user"></i></a></div>
+                                        <div className="nav-icon"><a href="/dashboard"><i className="fa fa-user"></i></a></div>
                                         <div className="nav-icon"><a href="/cart"><i className="fa fa-shopping-cart"></i></a></div>
+                                        <div className="nav-icon"><a href="/wishlist"><i className="fa fa-heart"></i></a></div>                                        
                                         <Search></Search>
                                         <Language lang_change={this.lang_change}></Language>
                                     </div>
